@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PIM – Please Inconvenience Me</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Josefin+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #1A6E8E;
+      --primary-light: #2a8fb5;
+      --primary-dark: #0f4a61;
+      --accent: #e8f4f8;
+      --bg: #f7fafb;
+      --white: #ffffff;
+      --text: #0f2027;
+      --text-muted: #4a6572;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 48px;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(26,110,142,0.1);
+    }
+
+    .nav-logo {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--primary);
+      letter-spacing: 0.1em;
+    }
+
+    .nav-cta {
+      background: var(--primary);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .nav-cta:hover { background: var(--primary-light); transform: translateY(-1px); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 24px 80px;
+      background: linear-gradient(160deg, #0f2027 0%, #1A6E8E 50%, #2a8fb5 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.03);
+      top: -100px; right: -150px;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      bottom: -80px; left: -100px;
+      animation: float 10s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-30px); }
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 700px; }
+
+    .hero-eyebrow {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.9);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 50px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .hero h1 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(5rem, 15vw, 9rem);
+      font-weight: 700;
+      color: white;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      margin-bottom: 12px;
+      text-shadow: 0 4px 32px rgba(0,0,0,0.2);
+    }
+
+    .hero .full-name {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(1.2rem, 3vw, 1.7rem);
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 400;
+      margin-bottom: 40px;
+    }
+
+    .hero .tagline {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      color: rgba(255,255,255,0.9);
+      line-height: 1.5;
+      margin-bottom: 48px;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: white;
+      color: var(--primary-dark);
+      padding: 16px 40px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+
+    .btn-ghost {
+      background: transparent;
+      color: rgba(255,255,255,0.9);
+      padding: 16px 40px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      border: 1.5px solid rgba(255,255,255,0.35);
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-ghost:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+
+    /* ─── PROBLEM SECTION ─── */
+    .problem {
+      padding: 100px 24px;
+      text-align: center;
+      background: var(--white);
+    }
+
+    .problem h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      max-width: 640px;
+      margin: 0 auto 20px;
+      line-height: 1.3;
+    }
+
+    .problem p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .problem .highlight { color: var(--primary); font-weight: 600; }
+
+    /* ─── FEATURES ─── */
+    .features {
+      padding: 100px 24px;
+      background: var(--bg);
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-label {
+      display: inline-block;
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .features-header h2 {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 700;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 36px 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border: 1px solid rgba(26,110,142,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .feature-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(26,110,142,0.12); }
+
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+      display: block;
+      text-align: center;
+    }
+
+    .feature-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--primary-dark);
+    }
+
+    .feature-card p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* ─── SCREENSHOTS ─── */
+    .screenshots-section {
+      padding: 100px 24px;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--accent) 100%);
+      overflow: hidden;
+    }
+
+    .screenshots-section .features-header { margin-bottom: 48px; }
+
+    .gallery {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      align-items: flex-end;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .gallery img {
+      height: 400px;
+      width: auto;
+      border-radius: 20px;
+      cursor: pointer;
+      opacity: 0.65;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      transform-origin: bottom center;
+      transition: transform 0.35s ease, opacity 0.35s ease, box-shadow 0.35s ease;
+      flex-shrink: 0;
+    }
+
+    .gallery img:hover {
+      opacity: 0.85;
+    }
+
+    .gallery img.active {
+      transform: scale(1.18);
+      opacity: 1;
+      box-shadow: 0 20px 56px rgba(0,0,0,0.25);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ─── HOW IT WORKS ─── */
+    .how-it-works {
+      padding: 100px 24px;
+      background: var(--white);
+      text-align: center;
+    }
+
+    .how-it-works .features-header { margin-bottom: 60px; }
+
+    .steps {
+      display: flex;
+      gap: 0;
+      max-width: 860px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .step {
+      flex: 1;
+      min-width: 200px;
+      padding: 0 24px;
+      position: relative;
+    }
+
+    .step:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -8px;
+      top: 20px;
+      font-size: 1.4rem;
+      color: var(--primary);
+      opacity: 0.4;
+    }
+
+    .step-num {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    .step h4 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .step p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ─── CTA BANNER ─── */
+    .cta-banner {
+      padding: 100px 24px;
+      text-align: center;
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+      color: white;
+    }
+
+    .cta-banner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+
+    .cta-banner p {
+      opacity: 0.8;
+      margin-bottom: 40px;
+      font-size: 1.05rem;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--text);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 0.85rem;
+    }
+
+    footer a { color: rgba(255,255,255,0.6); text-decoration: underline; }
+    footer a:hover { color: white; }
+
+    /* ─── STORE BUTTONS ─── */
+    .store-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: #000;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: transform 0.2s, opacity 0.2s;
+      min-width: 180px;
+    }
+
+    .store-btn:hover { transform: translateY(-2px); opacity: 0.85; }
+
+    .store-btn svg { flex-shrink: 0; }
+
+    .store-btn-text { text-align: left; }
+    .store-btn-text .sub { font-size: 0.65rem; font-weight: 400; opacity: 0.85; display: block; color: white; text-transform: uppercase; letter-spacing: 0.04em; }
+    .store-btn-text .main { font-size: 1rem; font-weight: 700; display: block; line-height: 1.2; color: white; }
+
+    /* ─── COMING SOON TOOLTIP ─── */
+    .coming-soon-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .coming-soon-wrap .tooltip {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      color: var(--primary-dark);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+      transform: translateX(-50%) translateY(4px);
+    }
+
+    .coming-soon-wrap .tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: white;
+    }
+
+    .coming-soon-wrap:hover .tooltip,
+    .coming-soon-wrap.tapped .tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 600px) {
+      .coming-soon-wrap:hover:not(.tapped) .tooltip { opacity: 0; }
+      .hero { padding: 40px 20px 60px; min-height: auto; }
+
+      .hero .tagline { font-size: 1.2rem; margin-bottom: 32px; }
+
+      .hero-btns { flex-direction: column; align-items: center; }
+
+      .store-btn { min-width: 220px; justify-content: center; }
+
+      .screenshots-section { padding: 60px 16px; }
+
+      .gallery {
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding-bottom: 12px;
+        gap: 10px;
+      }
+
+      .gallery img { height: 280px; }
+      .gallery img.active { transform: scale(1.08); }
+
+      .problem { padding: 60px 20px; }
+
+      .features { padding: 60px 20px; }
+      .features-grid { grid-template-columns: 1fr; }
+
+      .cta-banner { padding: 60px 20px; }
+      .cta-banner > div { flex-direction: column; align-items: center; }
+
+    }
+
+    /* ─── SCROLL ANIMATION ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+<h1>PIM</h1>
+      <p class="full-name">Please Inconvenience Me</p>
+      <p class="tagline">"Because not everything should be convenient."</p>
+      <div class="hero-btns">
+        <div class="coming-soon-wrap">
+          <a href="#" class="store-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5" fill="#00B0FF"/>
+              <path d="M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" fill="#00C853"/>
+              <path d="M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81" fill="#FFD400"/>
+              <path d="M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12Z" fill="#FF3D00"/>
+            </svg>
+            <div class="store-btn-text">
+              <span class="sub">Get it on</span>
+              <span class="main">Google Play</span>
+
+            </div>
+          </a>
+          <span class="tooltip">Coming soon to Google Play!</span>
+        </div>
+        <div class="coming-soon-wrap">
+          <a href="#" class="store-btn apple">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            <div class="store-btn-text">
+              <span class="sub">Download on the</span>
+              <span class="main">App Store</span>
+            </div>
+          </a>
+          <span class="tooltip">Coming soon to the App Store!</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENSHOTS -->
+  <section class="screenshots-section">
+    <div class="features-header reveal">
+      <span class="section-label">The App</span>
+      <h2>See it in action.</h2>
+    </div>
+    <div class="gallery reveal">
+      <img src="screenshots/Screenshot_20260213-115130.png" alt="PIM welcome screen" class="active" />
+      <img src="screenshots/Screenshot_20260213-115210.png" alt="Choose your challenge" />
+      <img src="screenshots/Screenshot_20260213-154721.png" alt="Restricted apps list" />
+      <img src="screenshots/Screenshot_20260216-123412.png" alt="Math challenge" />
+      <img src="screenshots/Screenshot_20260213-160045.png" alt="Remove restriction" />
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="problem reveal">
+    <h2>You open Instagram.<br>You didn't mean to.</h2>
+    <p style="margin-top: 20px;">
+      Your phone is designed to be <span class="highlight">frictionless</span>. PIM puts the friction back —
+      not to lock you out, but to make it <span class="highlight">a little less convenient</span>.
+    </p>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="features-header reveal">
+      <span class="section-label">Features</span>
+      <h2>A little resistance goes a long way.</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <span class="feature-icon">🔒</span>
+        <h3>Restrict Any App</h3>
+        <p>Pick which apps require a challenge before opening. Choose how long access lasts before you have to solve again.</p>
+      </div>
+      <div class="feature-card reveal">
+        <span class="feature-icon">🧮</span>
+        <h3>Math Challenges</h3>
+        <p>Solve a math problem to unlock an app. Choose Easy, Medium, Hard, or fully configure your own difficulty.</p>
+      </div>
+      <div class="feature-card reveal">
+        <span class="feature-icon">⏱</span>
+        <h3>Access Timers</h3>
+        <p>Set how many minutes of access each solved challenge gets you. When time's up, solve again to continue.</p>
+      </div>
+      <div class="feature-card reveal">
+        <span class="feature-icon">⚠️</span>
+        <h3>Inconvenience, Not Blocking</h3>
+        <p>PIM doesn't lock you out — it makes you do a little work. Often that's all you need to prevent endless scrolling.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-banner reveal">
+    <h2>"Put down the phone."</h2>
+    <p>Free on Google Play. No ads. No tracking.</p>
+    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+      <div class="coming-soon-wrap">
+        <a href="#" class="store-btn">
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5" fill="#00B0FF"/>
+            <path d="M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" fill="#00C853"/>
+            <path d="M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.5,12.92 20.16,13.19L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81" fill="#FFD400"/>
+            <path d="M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12Z" fill="#FF3D00"/>
+          </svg>
+          <div class="store-btn-text">
+            <span class="sub">Get it on</span>
+            <span class="main">Google Play</span>
+          </div>
+        </a>
+        <span class="tooltip">Coming soon to Google Play!</span>
+      </div>
+      <div class="coming-soon-wrap">
+        <a href="#" class="store-btn apple">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          <div class="store-btn-text">
+            <span class="sub">Download on the</span>
+            <span class="main">App Store</span>
+          </div>
+        </a>
+        <span class="tooltip">Coming soon to the App Store!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRIVACY POLICY -->
+  <section id="privacy" style="background: var(--white); padding: 40px 24px;">
+    <div style="max-width: 680px; margin: 0 auto;">
+      <button onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('.arrow').classList.toggle('flip')"
+        style="background:none; border:none; cursor:pointer; display:flex; align-items:center; gap:10px; font-family:inherit; font-size:1rem; font-weight:700; color:var(--primary); padding:0;">
+        Privacy Policy <span class="arrow" style="transition: transform 0.3s;">▼</span>
+      </button>
+      <div style="max-height:0; overflow:hidden; transition: max-height 0.4s ease;">
+      <style>.open { max-height: 2000px !important; } .flip { transform: rotate(180deg); }</style>
+      <div style="padding-top: 24px;">
+      <p style="font-size: 0.85rem; color: #888; margin-bottom: 32px;">Last updated: February 2026</p>
+
+      <p style="font-size: 0.95rem; line-height: 1.7; color: #333;">PIM (Please Inconvenience Me) is designed with privacy in mind. We do not collect, store, or share any personal data.</p>
+
+      <h3 style="font-size: 1rem; font-weight: 700; margin: 28px 0 8px; color: var(--primary);">What data does PIM access?</h3>
+      <p style="font-size: 0.95rem; line-height: 1.7; color: #333;">PIM uses the following Android permissions to function:</p>
+      <ul style="padding-left: 20px; margin-top: 8px;">
+        <li style="font-size: 0.95rem; line-height: 1.7; color: #333; margin-bottom: 6px;"><strong>App Usage Access</strong> — to detect when a restricted app is opened. This data never leaves your device.</li>
+        <li style="font-size: 0.95rem; line-height: 1.7; color: #333; margin-bottom: 6px;"><strong>Display Over Other Apps</strong> — to show the math challenge on top of restricted apps.</li>
+        <li style="font-size: 0.95rem; line-height: 1.7; color: #333; margin-bottom: 6px;"><strong>Query Installed Apps</strong> — to display the list of apps you can restrict.</li>
+        <li style="font-size: 0.95rem; line-height: 1.7; color: #333; margin-bottom: 6px;"><strong>Notifications</strong> — to show the persistent foreground service notification required by Android.</li>
+        <li style="font-size: 0.95rem; line-height: 1.7; color: #333; margin-bottom: 6px;"><strong>Boot</strong> — to restart the monitoring service when your device reboots.</li>
+        <li style="font-size: 0.95rem; line-height: 1.7; color: #333; margin-bottom: 6px;"><strong>Battery Optimization</strong> — to keep the service running reliably in the background.</li>
+      </ul>
+
+      <h3 style="font-size: 1rem; font-weight: 700; margin: 28px 0 8px; color: var(--primary);">Does PIM collect any personal data?</h3>
+      <p style="font-size: 0.95rem; line-height: 1.7; color: #333;">No. PIM does not collect, transmit, or store any personal data on external servers. All settings and preferences are stored locally on your device only.</p>
+
+      <h3 style="font-size: 1rem; font-weight: 700; margin: 28px 0 8px; color: var(--primary);">Does PIM use analytics or advertising?</h3>
+      <p style="font-size: 0.95rem; line-height: 1.7; color: #333;">No. PIM contains no analytics, advertising SDKs, or third-party tracking of any kind.</p>
+
+      <h3 style="font-size: 1rem; font-weight: 700; margin: 28px 0 8px; color: var(--primary);">Does PIM share data with third parties?</h3>
+      <p style="font-size: 0.95rem; line-height: 1.7; color: #333;">No. PIM does not share any data with third parties because no data is collected in the first place.</p>
+
+      <h3 style="font-size: 1rem; font-weight: 700; margin: 28px 0 8px; color: var(--primary);">Contact</h3>
+      <p style="font-size: 0.95rem; line-height: 1.7; color: #333;">If you have any questions about this privacy policy, contact us at <a href="mailto:hello@pleaseinconvenienceme.com" style="color: var(--primary);">hello@pleaseinconvenienceme.com</a>.</p>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Please Inconvenience Me &nbsp;|&nbsp; <a href="#privacy">Privacy Policy</a></p>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Tooltip on click for touch devices
+    document.querySelectorAll('.coming-soon-wrap').forEach(wrap => {
+      wrap.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelectorAll('.coming-soon-wrap').forEach(w => w.classList.remove('tapped'));
+        wrap.classList.add('tapped');
+        setTimeout(() => wrap.classList.remove('tapped'), 2000);
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.coming-soon-wrap')) {
+        document.querySelectorAll('.coming-soon-wrap').forEach(w => w.classList.remove('tapped'));
+      }
+    });
+
+    // Auto-expand privacy policy if #privacy is in the URL
+    if (window.location.hash === '#privacy') {
+      const privacyContent = document.querySelector('#privacy .arrow').closest('button').nextElementSibling;
+      privacyContent.classList.add('open');
+      document.querySelector('#privacy .arrow').classList.add('flip');
+    }
+
+    // Gallery
+    document.querySelectorAll('.gallery img').forEach(img => {
+      img.addEventListener('click', () => {
+        document.querySelectorAll('.gallery img').forEach(i => i.classList.remove('active'));
+        img.classList.add('active');
+      });
+    });
+  </script>
+
+</body>
+</html>
