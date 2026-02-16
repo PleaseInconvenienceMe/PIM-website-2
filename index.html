@@ -719,6 +719,7 @@
       img.addEventListener('click', () => {
         document.querySelectorAll('.gallery img').forEach(i => i.classList.remove('active'));
         img.classList.add('active');
+        img.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       });
     });
   </script>
