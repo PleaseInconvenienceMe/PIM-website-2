@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download PIM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Josefin+Sans:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #1A6E8E;
+      --primary-dark: #0f4a61;
+      --text: #0f2027;
+      --text-muted: #4a6572;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(160deg, #0f2027 0%, #1A6E8E 50%, #2a8fb5 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 24px;
+      padding: 48px 40px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 3rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      font-size: 1rem;
+      opacity: 0.7;
+      letter-spacing: 0.1em;
+      margin-bottom: 32px;
+    }
+    .download-btn {
+      display: inline-block;
+      background: white;
+      color: var(--primary-dark);
+      padding: 16px 48px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      margin-bottom: 24px;
+    }
+    .download-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .note {
+      font-size: 0.85rem;
+      opacity: 0.6;
+      line-height: 1.6;
+    }
+    .note strong { opacity: 1; }
+    .back-link {
+      display: inline-block;
+      margin-top: 24px;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .back-link:hover { color: white; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>PIM</h1>
+    <p class="subtitle">Please Inconvenience Me</p>
+    <a href="/pim.apk" class="download-btn" download>Download APK</a>
+    <p class="note">
+      Android only. After downloading, you may need to<br>
+      <strong>enable "Install from unknown sources"</strong> in your phone settings.
+    </p>
+    <a href="/" class="back-link">&larr; Back to pleaseinconvenienceme.com</a>
+  </div>
+</body>
+</html>
