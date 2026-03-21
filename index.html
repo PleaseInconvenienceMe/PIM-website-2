@@ -276,69 +276,39 @@
 
     /* ─── SCREENSHOTS ─── */
     .screenshots-section {
-      padding: 100px 24px;
+      padding: 100px 0;
       background: linear-gradient(180deg, var(--bg) 0%, var(--accent) 100%);
-      overflow: hidden;
     }
 
-    .screenshots-section .features-header { margin-bottom: 48px; }
-
-    .gallery-outer {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
+    .screenshots-section .features-header {
+      margin-bottom: 48px;
+      padding: 0 24px;
     }
-
-    .gallery-arrow {
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 48px;
-      height: 48px;
-      font-size: 1.4rem;
-      cursor: pointer;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s, transform 0.2s;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-      z-index: 3;
-    }
-
-    .gallery-arrow:hover { background: var(--primary-light); transform: scale(1.08); }
 
     .gallery {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 0;
+      gap: 16px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 8px 24px 24px;
+      scrollbar-width: none;
     }
+
+    .gallery::-webkit-scrollbar { display: none; }
 
     .gallery img {
-      height: 360px;
+      height: 480px;
       width: auto;
-      border-radius: 20px;
-      cursor: pointer;
-      opacity: 0.5;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-      transform: scale(0.82);
-      transition: transform 0.4s ease, opacity 0.4s ease, box-shadow 0.4s ease;
+      border-radius: 16px;
       flex-shrink: 0;
-      margin: 0 -20px;
-      position: relative;
-      z-index: 1;
+      scroll-snap-align: start;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      transition: transform 0.2s ease;
     }
 
-    .gallery img.active {
-      transform: scale(1.1);
-      opacity: 1;
-      box-shadow: 0 20px 56px rgba(0,0,0,0.3);
-      z-index: 3;
+    .gallery img:hover {
+      transform: scale(1.02);
     }
 
     /* ─── HOW IT WORKS ─── */
@@ -508,11 +478,7 @@
         gap: 10px;
       }
 
-      .gallery-outer { gap: 8px; }
-      .gallery { padding: 30px 0; }
-      .gallery img { height: 200px; margin: 0 -12px; }
-      .gallery img.active { transform: scale(1.08); }
-      .gallery-arrow { width: 36px; height: 36px; font-size: 1rem; }
+      .gallery img { height: 380px; }
 
       .problem { padding: 60px 20px; }
 
@@ -584,17 +550,13 @@
       <span class="section-label">The App</span>
       <h2>See it in action.</h2>
     </div>
-    <div class="gallery-outer reveal">
-      <button class="gallery-arrow" id="gallery-prev">&#9664;</button>
-      <div class="gallery">
-        <img src="screenshots/Screenshot_20260320-200812.png" alt="PIM welcome screen" class="active" />
-        <img src="screenshots/Screenshot_20260320-201159.png" alt="Restricted apps list" />
-        <img src="screenshots/Screenshot_20260320-201220.png" alt="Countdown before app opens" />
-        <img src="screenshots/Screenshot_20260320-201413.png" alt="Math challenge" />
-        <img src="screenshots/Screenshot_20260320-201459.png" alt="Upgrade to unlimited" />
-        <img src="screenshots/Screenshot_20260320-214336.png" alt="Options and settings" />
-      </div>
-      <button class="gallery-arrow" id="gallery-next">&#9654;</button>
+    <div class="gallery reveal">
+      <img src="screenshots/Screenshot_20260320-200812.png" alt="PIM welcome screen" />
+      <img src="screenshots/Screenshot_20260320-201159.png" alt="Restricted apps list" />
+      <img src="screenshots/Screenshot_20260320-201220.png" alt="Countdown before app opens" />
+      <img src="screenshots/Screenshot_20260320-201413.png" alt="Math challenge" />
+      <img src="screenshots/Screenshot_20260320-201459.png" alt="Upgrade to unlimited" />
+      <img src="screenshots/Screenshot_20260320-214336.png" alt="Options and settings" />
     </div>
   </section>
 
@@ -748,37 +710,11 @@
       document.querySelector('#privacy .arrow').classList.add('flip');
     }
 
-    // Gallery
-    const galleryImgs = Array.from(document.querySelectorAll('.gallery img'));
-
-    function setActive(index) {
-      galleryImgs.forEach(i => i.classList.remove('active'));
-      galleryImgs[index].classList.add('active');
+    // Gallery: center the strip on load
+    const gallery = document.querySelector('.gallery');
+    if (gallery.scrollWidth > gallery.clientWidth) {
+      gallery.scrollLeft = (gallery.scrollWidth - gallery.clientWidth) / 2;
     }
-
-    galleryImgs.forEach((img, i) => {
-      img.addEventListener('click', () => setActive(i));
-    });
-
-    document.getElementById('gallery-prev').addEventListener('click', () => {
-      const current = galleryImgs.findIndex(i => i.classList.contains('active'));
-      setActive((current - 1 + galleryImgs.length) % galleryImgs.length);
-    });
-
-    document.getElementById('gallery-next').addEventListener('click', () => {
-      const current = galleryImgs.findIndex(i => i.classList.contains('active'));
-      setActive((current + 1) % galleryImgs.length);
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') {
-        const current = galleryImgs.findIndex(i => i.classList.contains('active'));
-        setActive((current - 1 + galleryImgs.length) % galleryImgs.length);
-      } else if (e.key === 'ArrowRight') {
-        const current = galleryImgs.findIndex(i => i.classList.contains('active'));
-        setActive((current + 1) % galleryImgs.length);
-      }
-    });
   </script>
 
 </body>
