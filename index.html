@@ -282,13 +282,41 @@
 
     .screenshots-section .features-header { margin-bottom: 48px; }
 
+    .gallery-wrap {
+      position: relative;
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .gallery-arrow {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, transform 0.2s;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+
+    .gallery-arrow:hover { background: var(--primary-light); transform: scale(1.08); }
+
     .gallery {
       display: flex;
       gap: 12px;
       justify-content: center;
       align-items: flex-end;
-      max-width: 1000px;
-      margin: 0 auto;
+      flex: 1;
+      overflow: hidden;
     }
 
     .gallery img {
@@ -482,6 +510,7 @@
         gap: 10px;
       }
 
+      .gallery-wrap { gap: 8px; }
       .gallery { overflow-x: auto; overflow-y: visible; padding: 50px 0; }
       .gallery img { height: 500px; }
       .gallery img.active { transform: scale(1.08); }
@@ -556,13 +585,17 @@
       <span class="section-label">The App</span>
       <h2>See it in action.</h2>
     </div>
-    <div class="gallery reveal">
-      <img src="screenshots/Screenshot_20260320-200812.png" alt="PIM welcome screen" class="active" />
-      <img src="screenshots/Screenshot_20260320-201159.png" alt="Restricted apps list" />
-      <img src="screenshots/Screenshot_20260320-201220.png" alt="Countdown before app opens" />
-      <img src="screenshots/Screenshot_20260320-201413.png" alt="Math challenge" />
-      <img src="screenshots/Screenshot_20260320-201459.png" alt="Upgrade to unlimited" />
-      <img src="screenshots/Screenshot_20260320-214336.png" alt="Options and settings" />
+    <div class="gallery-wrap reveal">
+      <button class="gallery-arrow" id="gallery-prev">&#8592;</button>
+      <div class="gallery">
+        <img src="screenshots/Screenshot_20260320-200812.png" alt="PIM welcome screen" class="active" />
+        <img src="screenshots/Screenshot_20260320-201159.png" alt="Restricted apps list" />
+        <img src="screenshots/Screenshot_20260320-201220.png" alt="Countdown before app opens" />
+        <img src="screenshots/Screenshot_20260320-201413.png" alt="Math challenge" />
+        <img src="screenshots/Screenshot_20260320-201459.png" alt="Upgrade to unlimited" />
+        <img src="screenshots/Screenshot_20260320-214336.png" alt="Options and settings" />
+      </div>
+      <button class="gallery-arrow" id="gallery-next">&#8594;</button>
     </div>
   </section>
 
@@ -717,12 +750,26 @@
     }
 
     // Gallery
-    document.querySelectorAll('.gallery img').forEach(img => {
-      img.addEventListener('click', () => {
-        document.querySelectorAll('.gallery img').forEach(i => i.classList.remove('active'));
-        img.classList.add('active');
-        img.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      });
+    const galleryImgs = Array.from(document.querySelectorAll('.gallery img'));
+
+    function setActive(index) {
+      galleryImgs.forEach(i => i.classList.remove('active'));
+      galleryImgs[index].classList.add('active');
+      galleryImgs[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+
+    galleryImgs.forEach((img, i) => {
+      img.addEventListener('click', () => setActive(i));
+    });
+
+    document.getElementById('gallery-prev').addEventListener('click', () => {
+      const current = galleryImgs.findIndex(i => i.classList.contains('active'));
+      setActive((current - 1 + galleryImgs.length) % galleryImgs.length);
+    });
+
+    document.getElementById('gallery-next').addEventListener('click', () => {
+      const current = galleryImgs.findIndex(i => i.classList.contains('active'));
+      setActive((current + 1) % galleryImgs.length);
     });
   </script>
 
