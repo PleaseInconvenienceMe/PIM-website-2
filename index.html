@@ -284,11 +284,12 @@
 
     .gallery-wrap {
       position: relative;
-      max-width: 1000px;
+      max-width: 600px;
       margin: 0 auto;
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 24px;
+      justify-content: center;
     }
 
     .gallery-arrow {
@@ -296,9 +297,9 @@
       color: white;
       border: none;
       border-radius: 50%;
-      width: 44px;
-      height: 44px;
-      font-size: 1.2rem;
+      width: 48px;
+      height: 48px;
+      font-size: 1.4rem;
       cursor: pointer;
       flex-shrink: 0;
       display: flex;
@@ -306,41 +307,67 @@
       justify-content: center;
       transition: background 0.2s, transform 0.2s;
       box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      z-index: 3;
     }
 
     .gallery-arrow:hover { background: var(--primary-light); transform: scale(1.08); }
 
     .gallery {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      align-items: flex-end;
-      flex: 1;
-      overflow: visible;
-    }
-
-    .gallery img {
-      height: 400px;
-      width: auto;
-      border-radius: 20px;
-      cursor: pointer;
-      opacity: 0.65;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-      transform-origin: center center;
-      transition: transform 0.35s ease, opacity 0.35s ease, box-shadow 0.35s ease;
+      position: relative;
+      width: 280px;
+      height: 560px;
       flex-shrink: 0;
     }
 
-    .gallery img:hover {
-      opacity: 0.85;
+    .gallery img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 24px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
     }
 
     .gallery img.active {
-      transform: scale(1.18);
       opacity: 1;
-      box-shadow: 0 20px 56px rgba(0,0,0,0.25);
-      position: relative;
-      z-index: 2;
+      pointer-events: auto;
+    }
+
+    .gallery-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .gallery-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--primary);
+      opacity: 0.25;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: opacity 0.3s;
+    }
+
+    .gallery-dot.active {
+      opacity: 1;
+    }
+
+    .gallery-caption {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      height: 1.4em;
     }
 
     /* ─── HOW IT WORKS ─── */
@@ -510,10 +537,9 @@
         gap: 10px;
       }
 
-      .gallery-wrap { gap: 8px; }
-      .gallery { overflow-x: auto; overflow-y: visible; padding: 50px 0; }
-      .gallery img { height: 500px; }
-      .gallery img.active { transform: scale(1.08); }
+      .gallery-wrap { gap: 12px; }
+      .gallery { width: 220px; height: 440px; }
+      .gallery-arrow { width: 40px; height: 40px; font-size: 1.1rem; }
 
       .problem { padding: 60px 20px; }
 
@@ -588,15 +614,17 @@
     <div class="gallery-wrap reveal">
       <button class="gallery-arrow" id="gallery-prev">&#8592;</button>
       <div class="gallery">
-        <img src="screenshots/Screenshot_20260320-200812.png" alt="PIM welcome screen" class="active" />
-        <img src="screenshots/Screenshot_20260320-201159.png" alt="Restricted apps list" />
-        <img src="screenshots/Screenshot_20260320-201220.png" alt="Countdown before app opens" />
-        <img src="screenshots/Screenshot_20260320-201413.png" alt="Math challenge" />
-        <img src="screenshots/Screenshot_20260320-201459.png" alt="Upgrade to unlimited" />
-        <img src="screenshots/Screenshot_20260320-214336.png" alt="Options and settings" />
+        <img src="screenshots/Screenshot_20260320-200812.png" alt="PIM welcome screen" data-caption="Welcome screen" class="active" />
+        <img src="screenshots/Screenshot_20260320-201159.png" alt="Restricted apps list" data-caption="Your restricted apps" />
+        <img src="screenshots/Screenshot_20260320-201220.png" alt="Countdown before app opens" data-caption="Countdown before access" />
+        <img src="screenshots/Screenshot_20260320-201413.png" alt="Math challenge" data-caption="Math challenge" />
+        <img src="screenshots/Screenshot_20260320-201459.png" alt="Upgrade to unlimited" data-caption="Upgrade to unlimited" />
+        <img src="screenshots/Screenshot_20260320-214336.png" alt="Options and settings" data-caption="Customize your settings" />
       </div>
       <button class="gallery-arrow" id="gallery-next">&#8594;</button>
     </div>
+    <div class="gallery-dots reveal"></div>
+    <div class="gallery-caption reveal"></div>
   </section>
 
   <!-- PROBLEM -->
@@ -751,16 +779,28 @@
 
     // Gallery
     const galleryImgs = Array.from(document.querySelectorAll('.gallery img'));
+    const dotsContainer = document.querySelector('.gallery-dots');
+    const captionEl = document.querySelector('.gallery-caption');
+
+    // Build dots
+    galleryImgs.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => setActive(i));
+      dotsContainer.appendChild(dot);
+    });
+
+    // Set caption for first image
+    captionEl.textContent = galleryImgs[0].dataset.caption;
 
     function setActive(index) {
       galleryImgs.forEach(i => i.classList.remove('active'));
       galleryImgs[index].classList.add('active');
-      galleryImgs[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      dotsContainer.querySelectorAll('.gallery-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === index);
+      });
+      captionEl.textContent = galleryImgs[index].dataset.caption;
     }
-
-    galleryImgs.forEach((img, i) => {
-      img.addEventListener('click', () => setActive(i));
-    });
 
     document.getElementById('gallery-prev').addEventListener('click', () => {
       const current = galleryImgs.findIndex(i => i.classList.contains('active'));
