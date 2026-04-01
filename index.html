@@ -760,10 +760,13 @@
     // Tooltip on click for touch devices
     document.querySelectorAll('.coming-soon-wrap').forEach(wrap => {
       wrap.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.querySelectorAll('.coming-soon-wrap').forEach(w => w.classList.remove('tapped'));
-        wrap.classList.add('tapped');
-        setTimeout(() => wrap.classList.remove('tapped'), 2000);
+        const link = wrap.querySelector('a');
+        if (link && link.getAttribute('href') === '#') {
+          e.preventDefault();
+          document.querySelectorAll('.coming-soon-wrap').forEach(w => w.classList.remove('tapped'));
+          wrap.classList.add('tapped');
+          setTimeout(() => wrap.classList.remove('tapped'), 2000);
+        }
       });
     });
 
